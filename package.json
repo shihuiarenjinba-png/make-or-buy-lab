@@ -1,0 +1,12 @@
+{
+  "name":"make-or-buy-lab",
+  "version":"1.0.0",
+  "private":true,
+  "type":"module",
+  "description":"Local-first relevant-cost and capacity decision support for make-or-buy analysis",
+  "scripts":{
+    "test":"node --test tests/*.test.mjs",
+    "check":"npm test && node --check public/decision.js && node --check public/app.js && node --check src/decision.js",
+    "start":"python -m http.server 8766"
+  }
+}
