@@ -141,7 +141,7 @@ These files are Git-ignored.
 
 The Cloudflare API token is used by the deployment wrapper. Runtime provider secrets are placed in the environment-specific dev-vars file and can be synchronized to Cloudflare.
 
-Cloudflare supports environment-specific dotenv/dev-vars files and advises that secret files must not be committed. citeturn214823search0turn214823search4
+Cloudflare supports environment-specific dotenv/dev-vars files. Secret files must remain outside Git.
 
 ## Safety / account routing
 
@@ -228,4 +228,4 @@ Never put a `whsec_...`, Stripe secret key, Google client secret, or Cloudflare 
 
 ## Cloudflare Pages support
 
-Wrangler currently supports Pages project creation, deployment, and secret bulk upload, so the wrapper can automate those actions without using the dashboard each time. citeturn198756search0turn198756search2
+Wrangler supports Pages project creation, deployment, and secret bulk upload, so the wrapper can automate these actions without dashboard re-entry.
