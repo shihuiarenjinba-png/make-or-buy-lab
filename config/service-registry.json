@@ -1,0 +1,63 @@
+{
+  "service_id": "make-or-buy-lab",
+  "cloudflare_profile": "demandscope-commercial",
+  "account_id_env": "CF_DEMANDSCOPE_ACCOUNT_ID",
+  "api_token_env": "CF_DEMANDSCOPE_API_TOKEN",
+  "asset_dir": "public",
+  "projects": {
+    "preview": "make-or-buy-lab-preview",
+    "production": "make-or-buy-lab"
+  },
+  "branches": {
+    "preview": "preview",
+    "production": "main"
+  },
+  "environments": {
+    "preview": {
+      "billing_mode": "test",
+      "allow_production_writes": false
+    },
+    "production": {
+      "billing_mode": "live",
+      "allow_production_writes": true
+    }
+  },
+  "runtime_secret_map": [
+    {
+      "target": "STRIPE_SECRET_KEY",
+      "preview_source": "STRIPE_DEMANDSCOPE_TEST_SECRET_KEY",
+      "production_source": "STRIPE_DEMANDSCOPE_LIVE_SECRET_KEY",
+      "required": false
+    },
+    {
+      "target": "STRIPE_WEBHOOK_SECRET",
+      "preview_source": "STRIPE_DEMANDSCOPE_TEST_WEBHOOK_SECRET",
+      "production_source": "STRIPE_DEMANDSCOPE_LIVE_WEBHOOK_SECRET",
+      "required": false
+    },
+    {
+      "target": "STRIPE_PUBLISHABLE_KEY",
+      "preview_source": "STRIPE_DEMANDSCOPE_TEST_PUBLISHABLE_KEY",
+      "production_source": "STRIPE_DEMANDSCOPE_LIVE_PUBLISHABLE_KEY",
+      "required": false
+    },
+    {
+      "target": "GOOGLE_CLIENT_ID",
+      "preview_source": "GOOGLE_DEMANDSCOPE_PREVIEW_CLIENT_ID",
+      "production_source": "GOOGLE_DEMANDSCOPE_PRODUCTION_CLIENT_ID",
+      "required": false
+    },
+    {
+      "target": "GOOGLE_CLIENT_SECRET",
+      "preview_source": "GOOGLE_DEMANDSCOPE_PREVIEW_CLIENT_SECRET",
+      "production_source": "GOOGLE_DEMANDSCOPE_PRODUCTION_CLIENT_SECRET",
+      "required": false
+    },
+    {
+      "target": "SESSION_SECRET",
+      "preview_source": "APP_SESSION_SECRET_PREVIEW",
+      "production_source": "APP_SESSION_SECRET_PRODUCTION",
+      "required": false
+    }
+  ]
+}
