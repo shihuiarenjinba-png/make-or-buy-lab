@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 import test from 'node:test';
 
-const root=path.resolve(new URL('..', import.meta.url).pathname);
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const registry=JSON.parse(fs.readFileSync(path.join(root,'config','service-registry.json'),'utf8'));
 
 test('service registry has explicit preview and production routing',()=>{
