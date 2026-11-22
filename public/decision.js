@@ -4,7 +4,11 @@ function finite(name,value,{min=-Infinity,max=Infinity}={}){
   return n;
 }
 function optional(name,value,options){
-  if(value===undefined||value===null||value==='')return null;
+  if(value===undefined||value===null||String(value).trim()==='')return null;
+  return finite(name,value,options);
+}
+function required(name,value,options){
+  if(value===undefined||value===null||String(value).trim()==='')throw new Error(name+' is required');
   return finite(name,value,options);
 }
 function resources(profile={}){
@@ -17,7 +21,7 @@ function resources(profile={}){
   });
 }
 export function evaluateMakeOrBuy(profile={},input={}){
-  const quantity=finite('quantity',input.quantity,{min:1});
+  const quantity=required('quantity',input.quantity,{min:1});
   const make={
     materials:finite('make.materialsPerUnit',input.make?.materialsPerUnit??0,{min:0})*quantity,
     variableLabor:finite('make.variableLaborPerUnit',input.make?.variableLaborPerUnit??0,{min:0})*quantity,
@@ -31,7 +35,7 @@ export function evaluateMakeOrBuy(profile={},input={}){
     otherRelevant:finite('make.otherRelevantCost',input.make?.otherRelevantCost??0,{min:0})
   };
   const buy={
-    supplier:finite('buy.supplierUnitPrice',input.buy?.supplierUnitPrice,{min:0})*quantity,
+    supplier:required('buy.supplierUnitPrice',input.buy?.supplierUnitPrice,{min:0})*quantity,
     freight:finite('buy.freightCost',input.buy?.freightCost??0,{min:0}),
     inspection:finite('buy.inspectionCost',input.buy?.inspectionCost??0,{min:0}),
     qualityRework:finite('buy.qualityReworkCost',input.buy?.qualityReworkCost??0,{min:0}),
@@ -64,7 +68,7 @@ export function evaluateMakeOrBuy(profile={},input={}){
   if(strategicCriticality!==null&&strategicCriticality>=4)qualitativeFlags.push('HIGH_STRATEGIC_CRITICALITY');
   if(supplierConcentrationRisk!==null&&supplierConcentrationRisk>=4)qualitativeFlags.push('HIGH_SUPPLIER_CONCENTRATION');
   if(supplierLeadTimeDays!==null&&supplierLeadTimeDays>30)qualitativeFlags.push('LONG_SUPPLIER_LEAD_TIME');
-  return {quantity,make:{components:make,relevantCost:makeRelevantCost,costPerUnit:makeRelevantCost/quantity},buy:{components:buy,relevantCost:buyRelevantCost,costPerUnit:buyRelevantCost/quantity},costDifference,cheaperBy:Math.abs(costDifference),breakEvenSupplierUnitPrice,currentSupplierUnitPrice:finite('buy.supplierUnitPrice',input.buy?.supplierUnitPrice,{min:0}),capacity,capacityFeasible,recommendation,signal,excludedAllocatedFixedCost:unavoidableAllocatedFixedCost,risk:{supplierReliabilityPercent:supplierReliability,strategicCriticality,supplierConcentrationRisk,supplierLeadTimeDays,qualitativeFlags},assumptions:[
+  return {quantity,make:{components:make,relevantCost:makeRelevantCost,costPerUnit:makeRelevantCost/quantity},buy:{components:buy,relevantCost:buyRelevantCost,costPerUnit:buyRelevantCost/quantity},costDifference,cheaperBy:Math.abs(costDifference),breakEvenSupplierUnitPrice,currentSupplierUnitPrice:required('buy.supplierUnitPrice',input.buy?.supplierUnitPrice,{min:0}),capacity,capacityFeasible,recommendation,signal,excludedAllocatedFixedCost:unavoidableAllocatedFixedCost,risk:{supplierReliabilityPercent:supplierReliability,strategicCriticality,supplierConcentrationRisk,supplierLeadTimeDays,qualitativeFlags},assumptions:[
     'Only costs that change between MAKE and BUY belong in the relevant-cost comparison.',
     'Unavoidable allocated fixed cost is disclosed but excluded from both alternatives.',
     'Avoidable fixed cost is relevant because buying can eliminate that cost.',
