@@ -1,5 +1,5 @@
 import {evaluateMakeOrBuy} from './decision.js';
-const $=id=>document.getElementById(id),n=id=>Number($(id).value||0);
+const $=id=>document.getElementById(id),n=id=>Number($(id).value||0),requiredN=id=>{const raw=$(id).value;return raw.trim()===''?undefined:Number(raw)};
 const yen=v=>Math.round(v).toLocaleString('ja-JP')+'円',pct=v=>v===null?'—':(v*100).toFixed(1)+'%';
 let last=null;
 const ids=['quantity','unavoidableAllocatedFixedCost','materialsPerUnit','variableLaborPerUnit','variableOverheadPerUnit','setupCost','avoidableFixedCost','stepFixedCost','makeQuality','internalLogistics','knownOpportunityCost','makeOther','laborHours','machineHours','supplierUnitPrice','freightCost','inspectionCost','buyQuality','switchingCost','importTariff','buyOther','supplierReliability','supplierLeadTime','strategicCriticality','supplierConcentration','laborCapacity','laborUsed','machineCapacity','machineUsed'];
@@ -10,9 +10,9 @@ function payload(){
    {id:'machine',name:'設備',type:'equipment',capacityHours:n('machineCapacity'),usedHours:n('machineUsed')}
   ]},
   input:{
-   quantity:n('quantity'),unavoidableAllocatedFixedCost:n('unavoidableAllocatedFixedCost'),
+   quantity:requiredN('quantity'),unavoidableAllocatedFixedCost:n('unavoidableAllocatedFixedCost'),
    make:{materialsPerUnit:n('materialsPerUnit'),variableLaborPerUnit:n('variableLaborPerUnit'),variableOverheadPerUnit:n('variableOverheadPerUnit'),setupCost:n('setupCost'),avoidableFixedCost:n('avoidableFixedCost'),stepFixedCost:n('stepFixedCost'),qualityReworkCost:n('makeQuality'),internalLogisticsCost:n('internalLogistics'),knownOpportunityCost:n('knownOpportunityCost'),otherRelevantCost:n('makeOther'),resourceHours:{labor:n('laborHours'),machine:n('machineHours')}},
-   buy:{supplierUnitPrice:n('supplierUnitPrice'),freightCost:n('freightCost'),inspectionCost:n('inspectionCost'),qualityReworkCost:n('buyQuality'),switchingCost:n('switchingCost'),importTariff:n('importTariff'),otherRelevantCost:n('buyOther')},
+   buy:{supplierUnitPrice:requiredN('supplierUnitPrice'),freightCost:n('freightCost'),inspectionCost:n('inspectionCost'),qualityReworkCost:n('buyQuality'),switchingCost:n('switchingCost'),importTariff:n('importTariff'),otherRelevantCost:n('buyOther')},
    risk:{supplierReliabilityPercent:n('supplierReliability'),supplierLeadTimeDays:n('supplierLeadTime'),strategicCriticality:n('strategicCriticality'),supplierConcentrationRisk:n('supplierConcentration')}
   }
  };
