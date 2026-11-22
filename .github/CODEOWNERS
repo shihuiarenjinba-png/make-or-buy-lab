@@ -1,0 +1,3 @@
+/.github/workflows/ @shihuiarenjinba-png
+/.github/CODEOWNERS @shihuiarenjinba-png
+/scripts/ci/security_guard.py @shihuiarenjinba-png
